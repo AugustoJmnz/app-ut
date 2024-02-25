@@ -1,0 +1,14 @@
+<div class="flex flex-col gap-4">
+  <mat-form-field appearance="outline">
+    <mat-label for="name">Nombre de la comida</mat-label>
+    <input matInput placeholder="Ejem. Pizza" id="name" type="text" [formControl]="name">
+    @if (name.valid) {
+      <mat-error>{{ showValue() }}</mat-error>
+    }
+    <mat-icon matSuffix>food</mat-icon>
+  </mat-form-field>
+  <div class="flex gap-4">
+    <button mat-flat-button color="primary" (click)="showValue()">Enviar</button>
+    <button mat-flat-button color="primary" (click)="changeValue()">Cambiar valor</button>
+  </div>
+</div>
