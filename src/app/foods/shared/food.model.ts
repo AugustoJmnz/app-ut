@@ -5,6 +5,6 @@ export interface Food {
   name: string;
   description: string;
   image: string;
-  category: CategoryEnum;
+  category: string;
   price: number;
 }

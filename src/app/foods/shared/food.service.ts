@@ -1,6 +1,6 @@
-import {Injectable} from '@angular/core';
-import {Food} from './food.model';
-import {CategoryEnum} from './category.enum';
+import { Injectable } from '@angular/core';
+import { Food } from './food.model';
+import { CategoryEnum } from './category.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -63,5 +63,30 @@ export class FoodService {
 
   public getAllFood(): Food[] {
     return this.menu;
+  }
+  //Obtener comida del arreglo
+public getOne(id:number):Food | undefined {
+  return this.menu.find(item => item.id);
+}
+
+  //Añadir comida
+  public addFood(food: Food) {
+    this.menu.push(food);
+  }
+  //Actualizar comida
+  public updateFood(newFood: Food) {
+    this.menu.forEach((food, index) => {
+      if (food.id == newFood.id) {
+        this.menu [index] = newFood
+      }
+    })
+  }
+  //Eliminar comida
+  public deleteFood(deleteFood: Food) {
+    this.menu.forEach((food, index) => {
+      if (food.id == deleteFood.id) {
+        this.menu.splice(index, 1);
+      }
+    })
   }
 }
