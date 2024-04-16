@@ -5,6 +5,7 @@ import {
   ReactiveFormsModule,
   Validators
 } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -55,16 +56,12 @@ export class FormFoodComponent implements OnInit {
       this.edit = true;
       this.fooId = Number(this.activedRoute.snapshot.params['id']);
       console.log(this.fooId);
-      this.food = this.serviceFood.getOne(this.fooId);
-      if (this.food) {
-        this.form.patchValue({
-          name: this.food.name,
-          description: this.food.description,
-          image: this.food.image,
-          category: this.food.category,
-          price: this.food.price.toString()
-        })
-      }
+      //this.food = this.serviceFood.getOne(this.fooId);
+      this.serviceFood.getOne(this.fooId).subscribe({
+        next: (value) => (this.updateForm(value)),
+        error: (e) => console.error(e),
+        complete: () => console.info('complete')
+      })
     }
   }
 
@@ -89,8 +86,11 @@ export class FormFoodComponent implements OnInit {
           price: priceNumber
         };
         console.log(comida);
-        this.serviceFood.updateFood(comida);
-        //this.router.navigate(['/food/food-list']);
+        this.serviceFood.addFood(comida).subscribe({
+          next: (value) => (this.food = value),
+          error: (e) => console.error(e),
+          complete: () => this.router.navigate(['/food/food-list']),
+        });
       }
     }
   }
@@ -115,12 +115,27 @@ export class FormFoodComponent implements OnInit {
           price: priceNumber
         };
         console.log(comida);
-        this.serviceFood.addFood(comida);
-        this.router.navigate(['/food/food-list']);
+        this.serviceFood.addFood(comida).subscribe({
+          next: (value) => (this.food = value),
+          error: (e) => console.error(e),
+          complete: () => console.info('complete')
+        });
+        this.router.navigate(['/food/food-list'])
       }
     }
   }
 
+  public updateForm(food: Food): void {
+    if (food) {
+      this.form.patchValue({
+        name: food.name,
+        description: food.description,
+        category: food.category,
+        image: food.image,
+        price: food.price.toString()
+      })
+    }
+  }
 
   get name() {
     return this.form.get('name');

@@ -22,6 +22,6 @@ export default [
   {
     path:"details-food/:id",
     component: DetailsFoodComponent,
-    title:"Comida detallada"
+    title:"Ver detalles"
   }
 ] satisfies Route[];

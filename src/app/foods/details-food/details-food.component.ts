@@ -15,12 +15,12 @@ import { MatIcon } from '@angular/material/icon';
 })
 export class DetailsFoodComponent implements OnInit {
 
-  constructor(public serviceFood: FoodService) {
+  constructor(public foodService: FoodService) {
 
   }
 
   activedRoute: ActivatedRoute = inject(ActivatedRoute);
-  fooId: number = -1;
+  foodId: number = -1;
   food?: Food = {
     id: 0,
     name: '',
@@ -31,8 +31,12 @@ export class DetailsFoodComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.fooId = Number(this.activedRoute.snapshot.params['id']);
-    this.food = this.serviceFood.getOne(this.fooId);
+    this.foodId = Number(this.activedRoute.snapshot.params['id']);
+    this.foodService.getOne(this.foodId).subscribe({
+      next:(value) => (this.food = value),
+      error:(e) => console.error(e),
+      complete:() => console.info('complete')
+    })
+    console.log(this.food);
   }
-
 }
